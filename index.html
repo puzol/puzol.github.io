@@ -1,38 +1,129 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Plastelinko</title>
-        <meta charset="utf-8">
-        <link href="styles/style.css" rel="stylesheet">
-    </head>
-    <body>
-        <head></head>
-        <main>
-            <div class="play-wrap">
-                <img class="play" src="assets/img/play.svg" alt="">
-            </div>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="dark">
+  <title>Slovkica</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23538d4e'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-size='18' fill='white' font-family='sans-serif' font-weight='700'%3ES%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <button type="button" id="settings-btn" class="text-btn invisible" disabled aria-hidden="true">Postavke</button>
+    <h1>Slovkica</h1>
+    <span class="header-spacer" aria-hidden="true"></span>
+  </header>
 
-            <div class="cont-wrap">
-                <div class="container">
-                    <div class="plast-wrap">
-                        <img class="plastelinko" src="assets/img/plastelinko.png">
-                    </div>
-                    <img class="portret" id="matija" src="assets/img/matija.svg" alt="">
-                    <img class="portret" id="mirkan" src="assets/img/mirkan.svg" alt="">
-                    <img class="portret" id="sven" src="assets/img/sven.svg" alt="">
-                    <img class="portret" id="puzol" src="assets/img/puzol.svg" alt="">
-                    <img class="portret" id="darac" src="assets/img/darac.svg" alt="">
-                </div>
-            </div>
+  <main>
+    <section id="screen-setup" class="screen active">
+      <div class="panel">
+        <p class="lead">Odaberi jezike, duljinu i način igre.</p>
 
-            <audio class="song" autoplay="true" loop>
-                <source src="assets/sound/ravnoteza.ogg" type="audio/ogg">
-                <source src="assets/sound/ravnoteza.mp3" type="audio/mpeg">
-                Your browser does not support the audio element.
-            </audio>
-        </main>
-        <footer></footer>
-        <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-        <script src="scripts/script.js"></script>
-    </body>
+        <div class="group">
+          <p class="legend">Jezici</p>
+          <div class="choices">
+            <label class="choice">
+              <input type="checkbox" name="lang" value="hr" checked>
+              Hrvatski
+            </label>
+            <label class="choice">
+              <input type="checkbox" name="lang" value="sr">
+              Srpski
+            </label>
+            <label class="choice">
+              <input type="checkbox" name="lang" value="en">
+              Engleski
+            </label>
+          </div>
+          <label class="choice check-line" id="intersection-label" hidden>
+            <input type="checkbox" id="intersection">
+            Samo riječi iste u HR i SR
+          </label>
+        </div>
+
+        <fieldset class="group">
+          <legend>Duljina</legend>
+          <div class="choices">
+            <label class="choice">
+              <input type="radio" name="length" value="4">
+              4 slova
+            </label>
+            <label class="choice">
+              <input type="radio" name="length" value="5" checked>
+              5 slova
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset class="group">
+          <legend>Način</legend>
+          <div class="choices">
+            <label class="choice">
+              <input type="radio" name="mode" value="solo" checked>
+              Solo
+            </label>
+            <label class="choice">
+              <input type="radio" name="mode" value="duo">
+              Duo
+            </label>
+          </div>
+        </fieldset>
+
+        <p id="setup-note" class="note" aria-live="polite"></p>
+        <button type="button" id="start-btn" class="primary">Igraj</button>
+      </div>
+    </section>
+
+    <section id="screen-duo" class="screen">
+      <div class="panel">
+        <form id="duo-form" autocomplete="off">
+          <h2>Zadaj riječ</h2>
+          <p id="duo-hint" class="lead"></p>
+          <div class="secret-row">
+            <input id="secret-input" type="password" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" inputmode="text" aria-label="Tajna riječ">
+            <button type="button" id="eye-btn" class="eye" aria-pressed="false" aria-label="Prikaži riječ">
+              <svg class="eye-open" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill="none" stroke="currentColor" stroke-width="2" d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/>
+                <circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              <svg class="eye-shut" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill="none" stroke="currentColor" stroke-width="2" d="M3 4l18 16"/>
+                <path fill="none" stroke="currentColor" stroke-width="2" d="M10.6 6.2A11 11 0 0 1 12 6c6 0 10 6 10 6a18 18 0 0 1-3.2 3.8"/>
+                <path fill="none" stroke="currentColor" stroke-width="2" d="M6.2 6.7C3.8 8.4 2 12 2 12a18 18 0 0 0 5.4 5"/>
+                <path fill="none" stroke="currentColor" stroke-width="2" d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/>
+              </svg>
+            </button>
+          </div>
+          <p id="duo-error" class="note warn" aria-live="polite"></p>
+          <button type="submit" class="primary">Potvrdi riječ</button>
+        </form>
+      </div>
+    </section>
+
+    <section id="screen-handoff" class="screen">
+      <div class="panel">
+        <h2>Predaj uređaj</h2>
+        <p class="lead">Riječ je postavljena. Sad pogađa drugi igrač.</p>
+        <button type="button" id="start-guess" class="primary">Kreni</button>
+      </div>
+    </section>
+
+    <section id="screen-play" class="screen">
+      <p id="status" class="status" aria-live="polite"></p>
+      <div id="board" class="board"></div>
+      <div id="end-panel" class="end-panel" hidden>
+        <p id="end-title" class="end-title"></p>
+        <p class="end-label">Riječ je bila</p>
+        <p id="end-word" class="end-word"></p>
+        <button type="button" id="new-round" class="primary">Nova runda</button>
+      </div>
+      <div id="keyboard" class="keyboard"></div>
+    </section>
+  </main>
+
+  <script src="js/words.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/ui.js"></script>
+</body>
 </html>
